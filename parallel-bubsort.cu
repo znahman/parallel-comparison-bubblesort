@@ -21,11 +21,11 @@
  * - populate the array with integers from the range [1,1000]
  * - sort the array using sequential bubblesort
  * - sort the array using parallel bubblesort
- * - compare sequential bubblesort and paralle bubblesort
+ * - compare sequential bubblesort and parallel bubblesort
 */
 
 
-// CUDA kernel
+// CUDA kernel - even comparisons
 __global__ void even_swapper(int *X, int N)
 {
     int i = blockIdx.x * blockDim.x + threadIdx.x;
@@ -39,6 +39,7 @@ __global__ void even_swapper(int *X, int N)
     }
 }
 
+// CUDA kernel - odd comparisons
 __global__ void odd_swapper(int *X, int N)
 {
     int i = blockIdx.x * blockDim.x + threadIdx.x;
@@ -131,7 +132,7 @@ int main( int argc, char* argv[] )
     cudaMemcpy(d_input_array, h_input_array, bytes, cudaMemcpyHostToDevice);
 
     int threadsToLaunch = ceil(N/32.0);
-    //invoke the kernel function
+    //invoke the kernel functions (both even swapping and odd swapping)
     clock_t par_begin = clock();
     for(int i = 0; i < N;  i++){
         even_swapper<<<threadsToLaunch, 32>>>(d_input_array, N);
