@@ -4,9 +4,9 @@ Parallel implementation of bubble sort originally done for a Parallel Computing 
 # Description
 This is a parallel implementation of bubblesort using NVIDIA's CUDA parallel programming abstraction. Bubblesort has no data dependence so long as each comparison operates on its own set of data. To achieve this, there's an even swapper that executes first followed by an odd swapper. All of the comparisons and swaps for each iteration of the bubblesort are carried out in parallel on the GPU.
 
-# Notes on Time Complexity and Room for Improvement
+# Notes on Time Complexity and Algorithm Improvement
 
-Bubblesort is **O(n^2)**. In the worst case, there are n comparisions performed n times to sort the array (thus, N*N = N^2). Since the comparisons and swaps are performed in parallel in this implementation, the time complexity for this algorithm is **O(n)**. The worst case is that n rounds of parallel comparing and swappping are required to sort the array. 
+Sequential bubblesort is **O(n^2)**. In the worst case, there are n comparisions performed n times to sort the array (thus, N*N = N^2). Since the comparisons and swaps are performed in parallel in this implementation, the time complexity for this algorithm is **O(n)**. The worst case is that n rounds of parallel comparing and swappping are required to sort the array. 
 
 The comparing and swapping kernel functions in this implementation are invoked n times. There is not currently a check implemented to see if the array is sorted and stop invoking the kernel functions. In some cases, this causes the algorithm to do extra work. However, there is still consistent speedup realized for n larger than 1300. I'm amazed that only a single parallel optimization results in such astronomical speedup. There is room for improvement on this algorithm by only invoking the kernel functions until the arra is sorted. 
 
